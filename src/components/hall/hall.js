@@ -3,7 +3,6 @@ import "./hall.css";
 import PlaceButton from "../place-button";
 
 const Hall = ({ seats, onSelected, selected, booked }) => {
-    // console.log(selected);
     const rowsOfHall = seats.map((item) => {
         let id = seats.findIndex((el) => el === item);
         let row = id + 1;

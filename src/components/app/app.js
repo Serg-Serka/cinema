@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import "./app.css";
-import PlaceButton from "../place-button";
 import AddButton from "../add-button";
 import Header from "../header";
 import Hall from "../hall";
@@ -40,7 +39,6 @@ export default class App extends Component {
     }
 
     onSelected = (id) => {
-        console.log(id);
         let x = false;
         const selected = this.state.selected;
         selected.forEach((el) => {
@@ -51,12 +49,10 @@ export default class App extends Component {
             }
         });
         if (x) {
-            console.log('Here!!!');
             return true;
         }
 
         this.setState(({selected}) => {
-            // console.log(selected);
             const newArr = [
                 ...selected,
                 id
@@ -65,28 +61,24 @@ export default class App extends Component {
                 selected: newArr
             };
         });
-        setTimeout(() => {
-            console.log(this.state.selected);
-        }, 5000);
     };
 
     deleteFromSelected = (id) => {
       const selected = this.state.selected;
 
       const newSelected = selected.filter(item => {
-         if (item[0] === id[0] && item[1] === id[1]) {
-             return false;
-         }
-         return true;
+         return !(item[0] === id[0] && item[1] === id[1]);
+
       });
       this.setState({
           selected: newSelected,
-      })
-
+      });
     };
+
 
     render() {
         const {all, selected, booked} = this.state;
+        let count = selected.length;
         return (
             <div className="app">
 
@@ -94,18 +86,19 @@ export default class App extends Component {
                     <Header />
                 </div>
                 <div className="row app-row">
-                    {/*<PlaceButton isAble={true} isBooked={false} isSelected={false} row={1} place={1} />*/}
+                    <AddButton count={count} />
+                </div>
+                <div className="row app-row">
                     <Hall seats={all}
                           selected={selected}
                           booked={booked}
                           onSelected={this.onSelected}/>
                 </div>
                 <div className="row app-row">
-                    <AddButton />
+                    <AddButton count={count} />
                 </div>
 
             </div>
-
         );
     }
 }
