@@ -35,7 +35,7 @@ const Cart = ({inCart, onDeleted}) => {
         <div>
             <button className="btn btn-dark"
                     onClick={handleShow}>
-                Cart ({count})
+                Cart: {count}
             </button>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>

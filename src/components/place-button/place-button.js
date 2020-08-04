@@ -7,7 +7,7 @@ export default class PlaceButton extends Component {
         let {isBooked, isSelected, place, onSelected} = this.props;
         let classNames = "btn btn-warning btn-sm";
         if (isSelected) {
-            classNames = "btn btn-light btn-sm";
+            classNames = "btn btn-success btn-sm";
         }
         if (isBooked) {
             classNames = "btn btn-danger btn-sm";
