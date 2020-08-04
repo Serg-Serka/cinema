@@ -4,7 +4,7 @@ import "./place-button.css";
 export default class PlaceButton extends Component {
 
     render() {
-        let {isBooked, isSelected, row, place, onSelected} = this.props;
+        let {isBooked, isSelected, place, onSelected} = this.props;
         let classNames = "btn btn-warning btn-sm";
         if (isSelected) {
             classNames = "btn btn-light btn-sm";

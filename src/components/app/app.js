@@ -29,15 +29,14 @@ export default class App extends Component {
 
     randomBooking() {
         let booked = [];
-        for (let i = 0; i < 40; i++) {
-            booked.push([]);
-            for (let j = 1; j <= 20; j++) {
-                if (Math.random() < 0.25)
-                booked[i].push(j);
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 40; j++) {
+                booked.push([j + 1, Math.round(Math.random() * 20) ]);
             }
         }
+
         return booked;
-    }
+    };
 
     onSelected = (id) => {
         let x = false;
@@ -97,11 +96,27 @@ export default class App extends Component {
         });
     };
 
-    onCartClick = () => {
-        const cart = this.state.inCart;
-        console.log(cart);
-    };
+    onDeleted = (ticket) => {
+        const cartIndex = this.state.inCart.findIndex((el) => el === ticket);
+        const bookedIndex = this.state.booked.findIndex((el) => el === ticket);
+        this.setState(({inCart, booked}) => {
+            const oldCart = inCart;
+            const newCart = [
+                ...oldCart.slice(0, cartIndex),
+                ...oldCart.slice(cartIndex +1),
+            ];
 
+            const oldBooked = booked;
+            const newBooked = [
+                ...oldBooked.slice(0, bookedIndex),
+                ...oldBooked.slice(bookedIndex + 1),
+            ];
+            return {
+                inCart: newCart,
+                booked: newBooked,
+            }
+        });
+    };
 
     render() {
         const {all, selected, booked, inCart} = this.state;
@@ -111,7 +126,7 @@ export default class App extends Component {
             <div className="app">
 
                 <div className="row app-row">
-                    <Header inCart={inCart} onCartClick={this.onCartClick} />
+                    <Header inCart={inCart} onDeleted={this.onDeleted} />
                 </div>
                 <div className="row app-row">
                     <AddButton count={count} disabled={nonTickets} onAddingTickets={this.onAddingTickets} />

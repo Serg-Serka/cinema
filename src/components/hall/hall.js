@@ -3,13 +3,15 @@ import "./hall.css";
 import PlaceButton from "../place-button";
 
 const Hall = ({ seats, onSelected, selected, booked }) => {
+    // console.log(booked);
+    // console.log(selected);
     const rowsOfHall = seats.map((item) => {
         let id = seats.findIndex((el) => el === item);
         let row = id + 1;
         const elementsOfRow = item.map((seat) => {
             let key = [row, seat];
-            let isSelected = false;
 
+            let isSelected = false;
             selected.forEach(el => {
                 if( (el[0] === key[0]) && (el[1] === key[1]) ) {
                     isSelected = true;
@@ -17,7 +19,8 @@ const Hall = ({ seats, onSelected, selected, booked }) => {
             });
 
             let isBooked = false;
-            booked.forEach(el => {
+            booked.forEach( (el) => {
+                // console.log(booked.length);
                 if( (el[0] === key[0]) && (el[1] === key[1]) ) {
                     isBooked = true;
                 }
