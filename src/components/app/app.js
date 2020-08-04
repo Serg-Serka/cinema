@@ -12,6 +12,7 @@ export default class App extends Component {
         all: this.hall,
         selected: [],
         booked: this.booked,
+        inCart: []
     };
 
 
@@ -75,18 +76,45 @@ export default class App extends Component {
       });
     };
 
+    onAddingTickets = () => {
+        const tickets = this.state.selected;
+        tickets.forEach((ticket) => {
+            this.setState(({inCart, booked}) => {
+                const newCarted = [
+                    ...inCart,
+                    ticket
+                ];
+                const newBooked = [
+                    ...booked,
+                    ticket
+                ];
+                return {
+                    inCart: newCarted,
+                    selected: [],
+                    booked: newBooked
+                }
+            });
+        });
+    };
+
+    onCartClick = () => {
+        const cart = this.state.inCart;
+        console.log(cart);
+    };
+
 
     render() {
-        const {all, selected, booked} = this.state;
+        const {all, selected, booked, inCart} = this.state;
         let count = selected.length;
+        let nonTickets = selected.length <= 0;
         return (
             <div className="app">
 
                 <div className="row app-row">
-                    <Header />
+                    <Header inCart={inCart} onCartClick={this.onCartClick} />
                 </div>
                 <div className="row app-row">
-                    <AddButton count={count} />
+                    <AddButton count={count} disabled={nonTickets} onAddingTickets={this.onAddingTickets} />
                 </div>
                 <div className="row app-row">
                     <Hall seats={all}
@@ -95,7 +123,7 @@ export default class App extends Component {
                           onSelected={this.onSelected}/>
                 </div>
                 <div className="row app-row">
-                    <AddButton count={count} />
+                    <AddButton count={count} disabled={nonTickets} onAddingTickets={this.onAddingTickets} />
                 </div>
 
             </div>
