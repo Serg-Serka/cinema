@@ -124,23 +124,23 @@ export default class App extends Component {
         let nonTickets = selected.length <= 0;
         return (
             <div className="app">
-
-                <div className="row app-row">
-                    <Header inCart={inCart} onDeleted={this.onDeleted} />
+                <div className="container-fluid">
+                    <div className="row app-row">
+                        <Header inCart={inCart} onDeleted={this.onDeleted} />
+                    </div>
+                    <div className="row app-row">
+                        <AddButton count={count} disabled={nonTickets} onAddingTickets={this.onAddingTickets} />
+                    </div>
+                    <div className="row app-row">
+                        <Hall seats={all}
+                              selected={selected}
+                              booked={booked}
+                              onSelected={this.onSelected}/>
+                    </div>
+                    <div className="row app-row">
+                        <AddButton count={count} disabled={nonTickets} onAddingTickets={this.onAddingTickets} />
+                    </div>
                 </div>
-                <div className="row app-row">
-                    <AddButton count={count} disabled={nonTickets} onAddingTickets={this.onAddingTickets} />
-                </div>
-                <div className="row app-row">
-                    <Hall seats={all}
-                          selected={selected}
-                          booked={booked}
-                          onSelected={this.onSelected}/>
-                </div>
-                <div className="row app-row">
-                    <AddButton count={count} disabled={nonTickets} onAddingTickets={this.onAddingTickets} />
-                </div>
-
             </div>
         );
     }

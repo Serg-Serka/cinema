@@ -11,9 +11,16 @@ const TicketList = ({inCart, onDeleted}) => {
             </li>
         );
     });
+    const msg =() => {
+        return (
+            <li className="list-group-item">
+                <h6>"No one ticket here!"</h6>
+            </li>
+        );
+    };
     return (
         <ul className="list-group">
-            {tickets}
+            {tickets.length ? tickets : msg()}
         </ul>
     );
 };

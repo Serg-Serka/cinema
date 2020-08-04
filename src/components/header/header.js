@@ -4,11 +4,11 @@ import Cart from "../cart";
 
 const Header = ({inCart, onDeleted}) => {
     return (
-        <div className="row">
-            <div className="col-md-11">
+        <div className="row header">
+            <div className="col-md-10">
                 <h2>Welcome to the cinema!</h2>
             </div>
-            <div className="col-md-1">
+            <div className="col-md-2">
                 <Cart inCart={inCart} onDeleted={onDeleted} />
             </div>
 
