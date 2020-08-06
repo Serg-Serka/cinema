@@ -34,8 +34,22 @@ export default class App extends Component {
                 booked.push([j + 1, Math.round(Math.random() * 20) ]);
             }
         }
-
         return booked;
+    };
+
+    indexFinder = (arr, element) => {
+        return arr.findIndex((el) => el === element);
+    };
+
+    addingElementToArrayInState = (prevArr, newEl) => {
+        return [ ...prevArr, newEl ];
+    };
+
+    deletingElementFromArrayInState = (oldArr, elementId) => {
+        return [
+            ...oldArr.slice(0, elementId),
+            ...oldArr.slice(elementId + 1),
+        ];
     };
 
     onSelected = (id) => {
@@ -45,7 +59,6 @@ export default class App extends Component {
             if ( (el[0] === id[0]) && (el[1] === id[1]) ) {
                 x = true;
                 return this.deleteFromSelected(id);
-
             }
         });
         if (x) {
@@ -53,12 +66,9 @@ export default class App extends Component {
         }
 
         this.setState(({selected}) => {
-            const newArr = [
-                ...selected,
-                id
-            ];
+            const newSelected = this.addingElementToArrayInState(selected, id);
             return {
-                selected: newArr
+                selected: newSelected
             };
         });
     };
@@ -79,14 +89,8 @@ export default class App extends Component {
         const tickets = this.state.selected;
         tickets.forEach((ticket) => {
             this.setState(({inCart, booked}) => {
-                const newCarted = [
-                    ...inCart,
-                    ticket
-                ];
-                const newBooked = [
-                    ...booked,
-                    ticket
-                ];
+                const newCarted = this.addingElementToArrayInState(inCart, ticket);
+                const newBooked = this.addingElementToArrayInState(booked, ticket);
                 return {
                     inCart: newCarted,
                     selected: [],
@@ -96,21 +100,15 @@ export default class App extends Component {
         });
     };
 
-    onDeleted = (ticket) => {
-        const cartIndex = this.state.inCart.findIndex((el) => el === ticket);
-        const bookedIndex = this.state.booked.findIndex((el) => el === ticket);
+    onDeletingTicket = (ticket) => {
+        const {inCart, booked} = this.state;
+        const cartIndex = this.indexFinder(inCart, ticket);
+        const bookedIndex = this.indexFinder(booked, ticket);
         this.setState(({inCart, booked}) => {
-            const oldCart = inCart;
-            const newCart = [
-                ...oldCart.slice(0, cartIndex),
-                ...oldCart.slice(cartIndex +1),
-            ];
 
-            const oldBooked = booked;
-            const newBooked = [
-                ...oldBooked.slice(0, bookedIndex),
-                ...oldBooked.slice(bookedIndex + 1),
-            ];
+            const newCart = this.deletingElementFromArrayInState(inCart, cartIndex);
+            const newBooked = this.deletingElementFromArrayInState(booked, bookedIndex);
+
             return {
                 inCart: newCart,
                 booked: newBooked,
@@ -126,7 +124,7 @@ export default class App extends Component {
             <div className="app">
                 <div className="container-fluid">
                     <div className="row app-row">
-                        <Header inCart={inCart} onDeleted={this.onDeleted} />
+                        <Header inCart={inCart} onDeleted={this.onDeletingTicket} />
                     </div>
                     <div className="row app-row">
                         <AddButton count={count} disabled={nonTickets} onAddingTickets={this.onAddingTickets} />
@@ -135,7 +133,8 @@ export default class App extends Component {
                         <Hall seats={all}
                               selected={selected}
                               booked={booked}
-                              onSelected={this.onSelected}/>
+                              onSelected={this.onSelected}
+                        />
                     </div>
                     <div className="row app-row">
                         <AddButton count={count} disabled={nonTickets} onAddingTickets={this.onAddingTickets} />

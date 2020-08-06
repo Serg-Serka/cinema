@@ -1,50 +1,50 @@
-import React from "react";
+import React, {Component} from "react";
 import "./hall.css";
 import PlaceButton from "../place-button";
 
-const Hall = ({ seats, onSelected, selected, booked }) => {
-    // console.log(booked);
-    // console.log(selected);
-    const rowsOfHall = seats.map((item) => {
-        let id = seats.findIndex((el) => el === item);
-        let row = id + 1;
-        const elementsOfRow = item.map((seat) => {
-            let key = [row, seat];
+export default class Hall extends Component{
 
-            let isSelected = false;
-            selected.forEach(el => {
-                if( (el[0] === key[0]) && (el[1] === key[1]) ) {
-                    isSelected = true;
-                }
-            });
+    setPropByComparingInArray = (arr, key) => {
+        let prop = false;
+        arr.forEach( el => {
+            if ( el[0] === key[0] && el[1] === key[1] ) {
+                prop = true;
+            }
+            return prop;
+        });
+        return prop;
+    };
 
-            let isBooked = false;
-            booked.forEach( (el) => {
-                // console.log(booked.length);
-                if( (el[0] === key[0]) && (el[1] === key[1]) ) {
-                    isBooked = true;
-                }
+    render() {
+        const { seats, onSelected, selected, booked } = this.props;
+
+        const rowOfHall = seats.map((item) => {
+            let row = seats.findIndex((el) => el === item) + 1;
+            const elementsOfRow = item.map((seat) => {
+                let key = [row, seat];
+                let isSelected = this.setPropByComparingInArray(selected, key);
+                let isBooked = this.setPropByComparingInArray(booked, key);
+
+                return (
+                    <li key={seat} className="list-group-item">
+                        <PlaceButton isBooked={isBooked} isSelected={isSelected} onSelected={() => onSelected(key)}
+                                     row={row} place={seat}/>
+                    </li>
+                );
             });
 
             return (
-                <li key={seat} className="list-group-item">
-                    <PlaceButton isBooked={isBooked} isSelected={isSelected} onSelected={() => onSelected(key)}
-                                 row={row} place={seat}/>
-                </li>
+                <ul key={row} className="list-group list-group-horizontal-sm">
+                    <li className="list-group-item row-number">{row} row</li>
+                    {elementsOfRow}
+                </ul>
             );
         });
+
         return (
-            <ul key={row} className="list-group list-group-horizontal-sm">
-                <li className="list-group-item row-number">{row} row</li>
-                {elementsOfRow}
+            <ul className="list-group list-group-flush">
+                {rowOfHall}
             </ul>
         );
-    });
-    return (
-        <ul className="list-group list-group-flush">
-            {rowsOfHall}
-        </ul>
-    );
+    }
 };
-
-export default Hall;
